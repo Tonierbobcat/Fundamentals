@@ -1,0 +1,16 @@
+modules:
+  warps: true
+  afk: true
+commands:
+  - god: true
+  - nickname: true
+  - heal: true
+  - spawn: true
+  - gamemode: true
+#CHAT
+format: "%player% > %message%"
+hover-enabled: false
+hover:
+  - "line1"
+  - "line2"
+  - "line3"
