@@ -7,10 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class TeleportRequestManager {
     private final User user;
@@ -29,41 +26,64 @@ public class TeleportRequestManager {
             return;
         }
 
-        Location location = onGoingRequests.get(requester.getUniqueId()).location();
+        Location requestedLocation = onGoingRequests.get(requester.getUniqueId()).location();
 
-        Common.sendMessage(user, Messages.ACCEPT_TELEPORT_REQUEST
-                .replace("{player}", requester.getPlayer().getName()));
-//        var a = new TeleportRequest(UUID.randomUUID(), new Location(null, 0,0,0), System.currentTimeMillis());
+        Common.sendMessage(this.user, Messages.ACCEPT_TELEPORT_REQUEST
+                .replace("{player}", requester.player().getName()));
 
-        requester.getPlayer().teleport(location);
+        requester.player().teleport(requestedLocation);
         onGoingRequests.remove(requester.getUniqueId());
     }
     public void acceptRequest() {
-        onGoingRequests.keySet().stream().findFirst().ifPresentOrElse(uuid -> {
-            Location location = onGoingRequests.get(uuid).location();
+        Set<TeleportRequest> requests = new HashSet<>(onGoingRequests.values());
+        requests.stream().findFirst().ifPresentOrElse(request -> {
+            Location requestedLocation = request.location();
+            User requester = request.user();
 
-            Player player = Bukkit.getPlayer(uuid);
-            player.teleport(location);
+            Common.sendMessage(this.user, Messages.ACCEPT_TELEPORT_REQUEST
+                    .replace("{player}", requester.player().getName()));
 
-            Common.sendMessage(user, Messages.ACCEPT_TELEPORT_REQUEST
-                    .replace("{player}", player.getName()));
-
-            onGoingRequests.remove(uuid);
+            requester.player().teleport(requestedLocation);
+            onGoingRequests.remove(requester.getUniqueId());
         }, () -> {
             Common.sendMessage(user, Messages.NO_ONGOING_REQUESTS);
         });
     }
 
-    public void cancelRequest(User sender) {
-        if (!onGoingRequests.containsKey(sender.getUniqueId()))
+    public void denyRequest(User requester) {
+        if (!onGoingRequests.containsKey(requester.getUniqueId())) {
+            Common.sendMessage(user, Messages.NO_ONGOING_REQUESTS_SPECIFIC);
             return;
-        onGoingRequests.remove(sender.getUniqueId());
+        }
+
+        Common.sendMessage(this.user, Messages.DENY_TELEPORT_REQUEST
+                .replace("{player}", requester.player().getName()));
+        Common.sendMessage(requester, Messages.TELEPORT_REQUEST_DENIED
+                .replace("{player}", this.user.player().getName()));
+        onGoingRequests.remove(requester.getUniqueId());
+    }
+
+    public void denyRequest() {
+        Set<TeleportRequest> requests = new HashSet<>(onGoingRequests.values());
+        requests.stream().findFirst().ifPresentOrElse(request -> {
+            User requester = request.user();
+
+            Common.sendMessage(this.user, Messages.DENY_TELEPORT_REQUEST
+                    .replace("{player}", requester.player().getName()));
+            Common.sendMessage(requester, Messages.TELEPORT_REQUEST_DENIED
+                    .replace("{player}", this.user.player().getName()));
+            onGoingRequests.remove(requester.getUniqueId());
+        }, () -> {
+            Common.sendMessage(user, Messages.NO_ONGOING_REQUESTS);
+        });
     }
 
     public void createRequest(User sender) {
         onGoingRequests.remove(sender.getUniqueId());
         UUID uuid = sender.getUniqueId();
-        onGoingRequests.put(uuid, new TeleportRequest(uuid, sender.getPlayer().getLocation()));
+        onGoingRequests.put(uuid, new TeleportRequest(sender, this.user.player().getLocation()));
+        Common.sendMessage(sender, Messages.TELEPORT_REQUEST_CREATED
+                .replace("{player}", user.player().getName()));
     }
 
     public Collection<Player> getRequests() {

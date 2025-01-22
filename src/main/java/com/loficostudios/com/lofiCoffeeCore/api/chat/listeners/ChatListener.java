@@ -10,6 +10,7 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ChatListener implements Listener {
     private static final int WIDTH = 20;
@@ -37,16 +39,18 @@ public class ChatListener implements Listener {
     @EventHandler
     private void onJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
-        var message = ColorUtils.deserialize(provider.getJoinMessageRaw()) //todo
-                .replaceText(builder -> builder.match("{player}").replacement(getPlayerNameComponent(player, false)));
+        var message = ColorUtils.deserialize(provider.getJoinMessageRaw()).replaceText(builder -> builder
+                .match(Pattern.quote("{player}"))
+                .replacement(getPlayerNameComponent(player, false)));
         e.joinMessage(message);
     }
 
     @EventHandler
     private void onQuit(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
-        var message = ColorUtils.deserialize(provider.getLeaveMessageRaw()) //todo
-                .replaceText(builder -> builder.match("{player}").replacement(getPlayerNameComponent(player, false)));
+        var message = ColorUtils.deserialize(provider.getLeaveMessageRaw()).replaceText(builder -> builder
+                .match(Pattern.quote("{player}"))
+                .replacement(getPlayerNameComponent(player, false)));
         e.quitMessage(message);
     }
 

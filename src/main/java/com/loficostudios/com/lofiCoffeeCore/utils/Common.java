@@ -3,6 +3,8 @@ package com.loficostudios.com.lofiCoffeeCore.utils;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -25,5 +27,11 @@ public class Common {
     }
     public static void sendMessage(User user, Component message) {
         user.sendMessage(message);
+    }
+    public static Component createButton(String label, ClickEvent e) {
+        Component text = ColorUtils.deserialize(label);
+        return Component.text()
+                .append(text).clickEvent(e)
+                .decoration(TextDecoration.BOLD, true).build();
     }
 }

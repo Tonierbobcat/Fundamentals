@@ -4,6 +4,7 @@ import com.loficostudios.com.lofiCoffeeCore.api.chat.ChatProvider;
 import com.loficostudios.com.lofiCoffeeCore.command.*;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
 import com.loficostudios.com.lofiCoffeeCore.command.teleport.TeleportAcceptCommand;
+import com.loficostudios.com.lofiCoffeeCore.command.teleport.TeleportDenyCommand;
 import com.loficostudios.com.lofiCoffeeCore.command.teleport.TeleportRequestCommand;
 import com.loficostudios.com.lofiCoffeeCore.command.vanilla.EnchantCommand;
 import com.loficostudios.com.lofiCoffeeCore.command.vanilla.GameModeCommand;
@@ -14,6 +15,7 @@ import com.loficostudios.com.lofiCoffeeCore.api.gui.GuiManager;
 import com.loficostudios.com.lofiCoffeeCore.api.gui.listeners.GuiListener;
 import com.loficostudios.com.lofiCoffeeCore.experimental.*;
 import com.loficostudios.com.lofiCoffeeCore.listeners.GodModeListener;
+import com.loficostudios.com.lofiCoffeeCore.listeners.MagnetListener;
 import com.loficostudios.com.lofiCoffeeCore.modules.afk.command.AFKCommand;
 import com.loficostudios.com.lofiCoffeeCore.modules.afk.AFKListener;
 import com.loficostudios.com.lofiCoffeeCore.listeners.EnviormentListener;
@@ -34,9 +36,7 @@ import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 
 public final class LofiCoffeeCore extends JavaPlugin {
@@ -115,37 +115,42 @@ public final class LofiCoffeeCore extends JavaPlugin {
     }
 
     private void registerCommands() {
-        new MagnetCommand().register(); //TODO
+        List<String> enabledCommands = getConfig().getStringList("commands");
 
-        Arrays.asList(
-                new GodCommand(userManager),
-                new SpawnCommand(),
-                new GiveCommand(),
-                new EnchantCommand(),
-                new HealCommand(),
-                new GameModeCommand(),
-                new NicknameCommand(userManager),
-                new EconomyCommand(),
-                new GameModeCommand(),
-                new BalanceCommand(),
-                new ReloadCommand(),
-                new MuteCommand(userManager),
-                new TeleportAcceptCommand(userManager),
-                new TeleportRequestCommand(userManager),
-                new FlyCommand()
-        ).forEach(Command::register);
+        Map<String, Command> commands = new HashMap<>();
+
+        commands.put("god", new GodCommand(userManager));
+        commands.put("nickname", new NicknameCommand(userManager));
+        commands.put("heal", new HealCommand());
+        commands.put("spawn", new SpawnCommand());
+        commands.put("gamemode", new GameModeCommand());
+        commands.put("give", new GiveCommand());
+        commands.put("enchant", new EnchantCommand());
+        commands.put("economy", new EconomyCommand());
+        commands.put("balance", new BalanceCommand());
+        commands.put("reload", new ReloadCommand());
+        commands.put("mute", new MuteCommand(userManager));
+        commands.put("tpaccept", new TeleportAcceptCommand(userManager));
+        commands.put("tpdeny", new TeleportDenyCommand(userManager));
+        commands.put("tprequest", new TeleportRequestCommand(userManager));
+        commands.put("fly", new FlyCommand());
+
+        commands.put("magnet", new MagnetCommand());
 
         if (afkModuleEnabled) {
-            new AFKCommand(this.userManager)
-                    .register();
+            commands.put("afk", new AFKCommand(this.userManager));
         }
 
         if (warpModuleEnabled) {
-            new WarpCommand(this.warpManager)
-                    .register();
-            new WarpsCommand(this.warpManager)
-                    .register();
+            commands.put("warp", new WarpCommand(this.warpManager));
+            commands.put("warps", new WarpsCommand(this.warpManager));
         }
+
+        commands.forEach((name, command) -> {
+            if (enabledCommands.contains(name)) {
+                command.register();
+            }
+        });
     }
 
     private void registerListeners() {

@@ -6,6 +6,7 @@ import com.loficostudios.com.lofiCoffeeCore.utils.FileUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -113,6 +114,19 @@ public class UserManager {
                     throw new UserAlreadyLoadedException("Player's user profile is already loaded");
             } catch (UserAlreadyLoadedException e) {
                 lgr.log(Level.WARNING, e.getMessage());
+            }
+        }
+
+        // WE Set the player to flying if they are in survival to prevent them from falling to their death
+        //logic statement is to prevent exploitation.
+        if (player.isOp() || player.hasPermission("lcs.fly")) { //todo replace magic string
+            var gm = player.getGameMode();
+            if (gm.equals(GameMode.SURVIVAL) || gm.equals(GameMode.ADVENTURE)) {
+                boolean wasFlying = user.isFlyEnabled();
+                if (wasFlying) {
+                    player.setAllowFlight(true);
+                    player.setFlying(true);
+                }
             }
         }
 

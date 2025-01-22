@@ -1,12 +1,29 @@
 modules:
   warps: true
   afk: true
+#COMMANDS
+#
+# Just comment out command rather than removing it
 commands:
-  - god: true
-  - nickname: true
-  - heal: true
-  - spawn: true
-  - gamemode: true
+  - god
+  - nickname
+  - heal
+  - spawn
+  - gamemode
+  - give
+  - enchant
+  - economy
+  - balance
+  - reload
+  - mute
+  - tpaccept
+  - tprequest
+  - fly
+  - afk
+  - warp
+  - warps
+  - magnet
+  - tpdeny
 #MAGNET
 magnet-pickup:
   sound: ENTITY_ITEM_PICKUP

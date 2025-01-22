@@ -1,7 +1,5 @@
 package com.loficostudios.com.lofiCoffeeCore.player;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
@@ -9,13 +7,16 @@ import java.util.UUID;
 
 public class PlayerExtension {
 
-    @Getter
     private Player player;
     protected final UUID uuid;
 
     public PlayerExtension(Player player, UUID uuid) {
         this.player = player;
         this.uuid = uuid;
+    }
+
+    public Player player() {
+        return player;
     }
 
     public UUID getUniqueId() {

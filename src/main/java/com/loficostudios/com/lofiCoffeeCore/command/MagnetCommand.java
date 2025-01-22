@@ -1,4 +1,4 @@
-package com.loficostudios.com.lofiCoffeeCore.experimental;
+package com.loficostudios.com.lofiCoffeeCore.command;
 
 import com.loficostudios.com.lofiCoffeeCore.LofiCoffeeCore;
 import com.loficostudios.com.lofiCoffeeCore.Messages;

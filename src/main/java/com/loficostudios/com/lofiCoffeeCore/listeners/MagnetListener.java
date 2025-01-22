@@ -1,24 +1,20 @@
-package com.loficostudios.com.lofiCoffeeCore.experimental;
+package com.loficostudios.com.lofiCoffeeCore.listeners;
 
 import com.loficostudios.com.lofiCoffeeCore.LofiCoffeeCore;
-import com.loficostudios.com.lofiCoffeeCore.Ore;
-import com.loficostudios.com.lofiCoffeeCore.api.events.OreBreakEvent;
+import com.loficostudios.com.lofiCoffeeCore.experimental.IReloadable;
 import com.loficostudios.com.lofiCoffeeCore.player.UserManager;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.ApiStatus;
 
@@ -117,17 +113,17 @@ public class MagnetListener implements Listener, IReloadable {
 
     }
 
-    @EventHandler
-    private void onOreBreak(OreBreakEvent e) {
-        Collection<ItemStack> drops = e.getDrops();
-
-        if (e.getType().equals(Ore.DIAMOND)) {
-            e.setCancelled(true);
-        }
-
-        drops.clear();
-        drops.add(new ItemStack(Material.ENDER_EYE, 32));
-    }
+//    @EventHandler
+//    private void onOreBreak(OreBreakEvent e) {
+//        Collection<ItemStack> drops = e.getDrops();
+//
+//        if (e.getType().equals(Ore.DIAMOND)) {
+//            e.setCancelled(true);
+//        }
+//
+//        drops.clear();
+//        drops.add(new ItemStack(Material.ENDER_EYE, 32));
+//    }
 
     @EventHandler
     private void onMobDeath(EntityDeathEvent e) {

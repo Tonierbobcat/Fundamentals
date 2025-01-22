@@ -12,11 +12,11 @@ import com.loficostudios.com.lofiCoffeeCore.player.PlayerExtension;
 import com.loficostudios.com.lofiCoffeeCore.player.tpa.TeleportRequestManager;
 import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 
 @SuppressWarnings({"LombokSetterMayBeUsed", "LombokGetterMayBeUsed"})
 public class User extends PlayerExtension {
@@ -34,8 +34,12 @@ public class User extends PlayerExtension {
     private boolean magnetEnabled;
 
     private double money;
+
     @Getter
+    @ApiStatus.Experimental
     private final TeleportRequestManager requestManager;
+
+    private boolean flyEnabled;
 
     public User(OfflinePlayer player) throws PlayerDoesNotExistException {
         super(null, player.getUniqueId());
@@ -44,6 +48,7 @@ public class User extends PlayerExtension {
         this.config = playerFile.getConfig();
         this.money = config.getDouble("money");
         this.muted = config.getBoolean("muted");
+        this.flyEnabled = config.getBoolean("flying");
 
         String displayNameFromConfig = config.getString("displayName");
 
@@ -59,7 +64,7 @@ public class User extends PlayerExtension {
         config.set("money", money);
         config.set("muted", muted);
         config.set("displayName", displayName);
-
+        config.set("flying", flyEnabled);
 //        config.set("displayname", displayName);
 //
         playerFile.save();
@@ -74,9 +79,16 @@ public class User extends PlayerExtension {
     }
 
     public void updateInGameDisplay() {
-        getPlayer().displayName(ColorUtils.deserialize(displayName));
+        player().displayName(ColorUtils.deserialize(displayName));
     }
 
+    public boolean isFlyEnabled() {
+        return this.flyEnabled;
+    }
+    public void setFlyEnabled(boolean value) {
+        this.flyEnabled = value;
+        player().setAllowFlight(value);
+    }
     public boolean isMuted() {
         return this.muted;
     }

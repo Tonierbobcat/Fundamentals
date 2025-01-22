@@ -4,9 +4,11 @@ import com.loficostudios.com.lofiCoffeeCore.annotation.ConfigField;
 import com.loficostudios.com.lofiCoffeeCore.api.file.impl.YamlFile;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.awt.*;
 import java.lang.reflect.Field;
 
 public class Messages {
+    //COLOR PALETTE FROM LIGHT TO DARK AFD2E9 9D96B8 9A7197 886176 7C5869
 
     @ConfigField
     public static String INVALID_PLAYER = "&#7C5869Invalid Player";
@@ -73,7 +75,14 @@ public class Messages {
     public static String NO_ONGOING_REQUESTS = "&#7C5869You have no ongoing requests.";
     @ConfigField
     public static String ACCEPT_TELEPORT_REQUEST = "&#9A7197Accepted &#AFD2E9{player}&#9A7197's teleport request.";
-//endregion
+    @ConfigField
+    public static String TELEPORT_REQUEST_CREATED = "&#AFD2E9Teleport request sent to &#9A7197{player}&#AFD2E9.";
+    @ConfigField
+    public static String TELEPORT_REQUEST_DENIED = "&#7C5869Your teleport request to &#9A7197{player} &#7C5869was denied.";
+    @ConfigField
+    public static String DENY_TELEPORT_REQUEST = "&#7C5869You denied &#9A7197{player}&#7C5869's teleport request.";
+
+    //endregion
 
     @ConfigField
     public static String GAVE_ITEM = "&#AFD2E9Gave &#9A7197{amount}x &#9D96B8{item} &#AFD2E9to &#9A7197{name}&#AFD2E9.";

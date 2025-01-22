@@ -1,7 +1,9 @@
 package com.loficostudios.com.lofiCoffeeCore.command;
 
+import com.loficostudios.com.lofiCoffeeCore.LofiCoffeeCore;
 import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
+import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
 import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
@@ -33,7 +35,11 @@ public class FlyCommand extends Command {
 
     private void toggleFlight(Player player) {
         boolean enabled = !player.getAllowFlight();
-        player.setAllowFlight(enabled);
+        User user = LofiCoffeeCore.getInstance().getUserManager().getUser(player);
+
+
+        user.setFlyEnabled(enabled);
+
         if (enabled) {
             Common.sendMessage(player, Messages.FLY_ENABLED);
         }
