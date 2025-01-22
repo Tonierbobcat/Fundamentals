@@ -10,16 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.BlockEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class OreBreakEvent extends Event implements Cancellable {
+public class OreBreakEvent extends BlockEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
-
-    @Getter
-    private final Block block;
 
     @Getter
     private final Player player;
@@ -35,6 +33,7 @@ public class OreBreakEvent extends Event implements Cancellable {
     private final Collection<ItemStack> drops;
 
     public OreBreakEvent(Block block, Player player, Collection<ItemStack> drops) {
+        super(block);
         this.block = block;
         this.player = player;
         this.drops = drops;

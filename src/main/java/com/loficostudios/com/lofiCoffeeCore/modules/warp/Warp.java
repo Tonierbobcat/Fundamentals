@@ -2,6 +2,8 @@ package com.loficostudios.com.lofiCoffeeCore.modules.warp;
 
 import com.loficostudios.com.lofiCoffeeCore.api.gui.GuiIcon;
 import com.loficostudios.com.lofiCoffeeCore.modules.warp.event.WarpEvent;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -88,8 +90,11 @@ public class Warp {
             icon.setItemMeta(meta);
         }
 
-        return new GuiIcon(icon, id, this::teleport);
+        return new GuiIcon(icon, this.id, player -> {
+            var result = teleport(player);
+            Common.sendMessage(player, result.getMessage()
+                    .replace("{id}", this.id)
+                    .replace("{name}", this.displayName));
+        });
     }
-
-
 }

@@ -10,6 +10,7 @@ import com.loficostudios.com.lofiCoffeeCore.modules.afk.AfkChangeReason;
 import com.loficostudios.com.lofiCoffeeCore.player.PlayerDoesNotExistException;
 import com.loficostudios.com.lofiCoffeeCore.player.PlayerExtension;
 import com.loficostudios.com.lofiCoffeeCore.player.tpa.TeleportRequestManager;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -29,6 +30,8 @@ public class User extends PlayerExtension {
 
     private boolean godModeEnabled;
     private boolean afk;
+
+    private boolean magnetEnabled;
 
     private double money;
     @Getter
@@ -71,7 +74,7 @@ public class User extends PlayerExtension {
     }
 
     public void updateInGameDisplay() {
-        getPlayer().displayName(Component.text(displayName));
+        getPlayer().displayName(ColorUtils.deserialize(displayName));
     }
 
     public boolean isMuted() {
@@ -134,5 +137,11 @@ public class User extends PlayerExtension {
         if (wasAfk != value) {
             Bukkit.getServer().getPluginManager().callEvent(new AFKStatusChangedEvent(this, value, AfkChangeReason.UNKNOWN));
         }
+    }
+    public boolean isMagnetEnabled() {
+        return this.magnetEnabled;
+    }
+    public void setMagnetEnabled(boolean value) {
+        this.magnetEnabled = value;
     }
 }

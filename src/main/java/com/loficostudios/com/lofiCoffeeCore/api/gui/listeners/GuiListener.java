@@ -4,7 +4,7 @@
  * @version MelodyApi
  */
 
-package com.loficostudios.com.lofiCoffeeCore.api.gui.listener;
+package com.loficostudios.com.lofiCoffeeCore.api.gui.listeners;
 
 import com.loficostudios.com.lofiCoffeeCore.api.gui.GuiIcon;
 import com.loficostudios.com.lofiCoffeeCore.api.gui.GuiManager;

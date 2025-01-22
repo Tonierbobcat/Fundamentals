@@ -3,6 +3,7 @@ package com.loficostudios.com.lofiCoffeeCore.command;
 import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
 import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
@@ -34,10 +35,10 @@ public class FlyCommand extends Command {
         boolean enabled = !player.getAllowFlight();
         player.setAllowFlight(enabled);
         if (enabled) {
-            player.sendMessage(ColorUtils.deserialize(Messages.FLY_ENABLED));
+            Common.sendMessage(player, Messages.FLY_ENABLED);
         }
         else {
-            player.sendMessage(ColorUtils.deserialize(Messages.FLY_DISABLED));
+            Common.sendMessage(player, Messages.FLY_DISABLED);
         }
     }
 }

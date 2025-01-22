@@ -1,18 +1,23 @@
 package com.loficostudios.com.lofiCoffeeCore;
 
+import com.loficostudios.com.lofiCoffeeCore.api.chat.ChatProvider;
 import com.loficostudios.com.lofiCoffeeCore.command.*;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
 import com.loficostudios.com.lofiCoffeeCore.command.teleport.TeleportAcceptCommand;
 import com.loficostudios.com.lofiCoffeeCore.command.teleport.TeleportRequestCommand;
+import com.loficostudios.com.lofiCoffeeCore.command.vanilla.EnchantCommand;
+import com.loficostudios.com.lofiCoffeeCore.command.vanilla.GameModeCommand;
+import com.loficostudios.com.lofiCoffeeCore.command.vanilla.GiveCommand;
 import com.loficostudios.com.lofiCoffeeCore.economy.VaultEconomyProvider;
 import com.loficostudios.com.lofiCoffeeCore.exceptions.WarpModuleNotEnabledException;
 import com.loficostudios.com.lofiCoffeeCore.api.gui.GuiManager;
-import com.loficostudios.com.lofiCoffeeCore.api.gui.listener.GuiListener;
+import com.loficostudios.com.lofiCoffeeCore.api.gui.listeners.GuiListener;
+import com.loficostudios.com.lofiCoffeeCore.experimental.*;
 import com.loficostudios.com.lofiCoffeeCore.listeners.GodModeListener;
 import com.loficostudios.com.lofiCoffeeCore.modules.afk.command.AFKCommand;
 import com.loficostudios.com.lofiCoffeeCore.modules.afk.AFKListener;
 import com.loficostudios.com.lofiCoffeeCore.listeners.EnviormentListener;
-import com.loficostudios.com.lofiCoffeeCore.listeners.PlayerChatListener;
+import com.loficostudios.com.lofiCoffeeCore.api.chat.listeners.ChatListener;
 import com.loficostudios.com.lofiCoffeeCore.listeners.PlayerListener;
 import com.loficostudios.com.lofiCoffeeCore.modules.warp.command.WarpCommand;
 import com.loficostudios.com.lofiCoffeeCore.modules.warp.command.WarpsCommand;
@@ -23,10 +28,15 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.ApiStatus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 
 public final class LofiCoffeeCore extends JavaPlugin {
@@ -54,6 +64,8 @@ public final class LofiCoffeeCore extends JavaPlugin {
 
     @Getter
     private boolean papiHook;
+
+    private final List<IReloadable> reloadTargets = new ArrayList<>();
 
     @Override
     public void onLoad() {
@@ -103,15 +115,20 @@ public final class LofiCoffeeCore extends JavaPlugin {
     }
 
     private void registerCommands() {
+        new MagnetCommand().register(); //TODO
+
         Arrays.asList(
                 new GodCommand(userManager),
                 new SpawnCommand(),
+                new GiveCommand(),
+                new EnchantCommand(),
                 new HealCommand(),
                 new GameModeCommand(),
                 new NicknameCommand(userManager),
                 new EconomyCommand(),
                 new GameModeCommand(),
                 new BalanceCommand(),
+                new ReloadCommand(),
                 new MuteCommand(userManager),
                 new TeleportAcceptCommand(userManager),
                 new TeleportRequestCommand(userManager),
@@ -132,18 +149,54 @@ public final class LofiCoffeeCore extends JavaPlugin {
     }
 
     private void registerListeners() {
+        //region CHAT_PROVIDER && CHAT_LISTENER
+        ServicesManager servicesManager = getServer().getServicesManager();
+        RegisteredServiceProvider<ChatProvider> rsp = servicesManager.getRegistration(ChatProvider.class);
+        var chatProviderImpl = rsp != null
+                ? rsp.getProvider()
+                : null;
+        if (chatProviderImpl == null) {
+            chatProviderImpl = new LCSChatProvider(this);
+            reloadTargets.add((IReloadable) chatProviderImpl);
+        }
+        else {
+            if (chatProviderImpl instanceof IReloadable)
+                this.reloadTargets.add((IReloadable) chatProviderImpl);
+        }
+        getServer().getPluginManager().registerEvents(new ChatListener(chatProviderImpl), this);
+        //endregion
+
         Arrays.asList(
+                new MagnetListener(this),
                 new GodModeListener(this),
                 new PlayerListener(this),
                 new EnviormentListener(this),
-                new PlayerChatListener(this),
                 new GuiListener(this.guiManager)
-        ).forEach(listener -> Bukkit.getServer().getPluginManager().registerEvents(listener, this));
+        ).forEach(listener -> {
+            if (listener instanceof IReloadable) {
+                reloadTargets.add((IReloadable) listener);
+            }
+            Bukkit.getServer().getPluginManager().registerEvents(listener, this);
+        });
 
         if (afkModuleEnabled) {
             Bukkit.getServer().getPluginManager()
                     .registerEvents(new AFKListener(userManager), this);
         }
+    }
+
+    @ApiStatus.Experimental
+    public long reload() {
+        long startTimeMillis = System.currentTimeMillis();
+        this.reloadConfig();
+
+        Messages.saveConfig();
+
+        for (IReloadable clazz : reloadTargets) {
+            clazz.reload();
+        }
+
+        return System.currentTimeMillis() - startTimeMillis;
     }
 
     public WarpManager getWarpManager() {

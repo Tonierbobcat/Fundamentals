@@ -3,6 +3,8 @@ package com.loficostudios.com.lofiCoffeeCore.command.base;
 import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import com.loficostudios.com.lofiCoffeeCore.player.UserManager;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
@@ -26,7 +28,7 @@ public abstract class AbstractUserManagementCommand extends Command {
                     Player target = (Player) args.get("player");
 
                     if (target == null) {
-                        sender.sendMessage(Messages.INVALID_PLAYER);
+                        Common.sendMessage(sender, Messages.INVALID_PLAYER);
                         return;
                     }
 

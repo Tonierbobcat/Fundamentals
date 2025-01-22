@@ -5,6 +5,7 @@ import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import com.loficostudios.com.lofiCoffeeCore.player.UserManager;
 import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -31,15 +32,15 @@ public class AFKListener implements Listener {
         if (!afk) {
             switch (e.getReason()) {
                 case COMMAND, UNKNOWN:
-                    user.sendMessage(Messages.AFK_DISABLED);
+                    Common.sendMessage(user, Messages.AFK_DISABLED);
                     break;
                 case INTERACT, CHAT, MOVEMENT:
-                    user.sendMessage(ColorUtils.deserialize(Messages.AFK_INTERRUPTED));
+                    Common.sendMessage(user, Messages.AFK_INTERRUPTED);
                     break;
             }
         }
         else {
-            user.sendMessage(ColorUtils.deserialize(Messages.AFK_ENABLED));
+            Common.sendMessage(user, Messages.AFK_ENABLED);
         }
     }
 

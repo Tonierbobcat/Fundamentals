@@ -19,10 +19,10 @@ import java.util.regex.Pattern;
 
 @UtilityClass
 public class ColorUtils {
-	public static Component deserialize(Component input) {
-		String rawMessage = LegacyComponentSerializer.legacyAmpersand().serialize(input);
-		return LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);
-	}
+//	public static Component deserialize(Component input) {
+//		String rawMessage = LegacyComponentSerializer.legacyAmpersand().serialize(input);
+//		return LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);
+//	}
 	public static Component deserialize(String input) {
 		String rawMessage = LegacyComponentSerializer.legacyAmpersand().serialize(Component.text(input));
 		return LegacyComponentSerializer.legacyAmpersand().deserialize(rawMessage);

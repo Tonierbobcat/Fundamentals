@@ -2,6 +2,8 @@ package com.loficostudios.com.lofiCoffeeCore.command;
 
 import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.IntegerArgument;
 import dev.jorel.commandapi.arguments.PlayerArgument;
@@ -38,8 +40,8 @@ public class HealCommand extends Command {
             target.setHealth(maxHealth.getValue());
             target.setFoodLevel(20);
 
-            target.sendMessage(Messages.HEALED_SELF);
-            sender.sendMessage(Messages.HEALED_TARGET.replace("{target}", target.getName()));
+            Common.sendMessage(target, Messages.HEALED_SELF);
+            Common.sendMessage(sender, Messages.HEALED_TARGET.replace("{target}", target.getName()));
             return;
         }
         AttributeInstance maxHealth = sender.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -51,6 +53,6 @@ public class HealCommand extends Command {
         sender.setHealth(maxHealth.getValue());
         sender.setFoodLevel(20);
 
-        sender.sendMessage(Messages.HEALED_SELF);
+        Common.sendMessage(sender, Messages.HEALED_SELF);
     }
 }

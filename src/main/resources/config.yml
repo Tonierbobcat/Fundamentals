@@ -7,7 +7,18 @@ commands:
   - heal: true
   - spawn: true
   - gamemode: true
+#MAGNET
+magnet-pickup:
+  sound: ENTITY_ITEM_PICKUP
+  volume: 1
+  pitch: 1
+magnet-always-enabled: false
+magnet-block-drops: true
+magnet-mob-drops: true
+magnet-exp: true
 #CHAT
+join-message: "&a&l+ &r{player}"
+leave-message: "&c&l- &r{player}"
 format: "%player% > %message%"
 hover-enabled: false
 hover:

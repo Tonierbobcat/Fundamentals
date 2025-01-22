@@ -6,16 +6,20 @@ import com.loficostudios.com.lofiCoffeeCore.api.events.OreBreakEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class EnviormentListener implements Listener {
 
@@ -61,27 +65,28 @@ public class EnviormentListener implements Listener {
                 return;
             }
 
-            if (player.getGameMode().equals(GameMode.SURVIVAL)) {
-                for (ItemStack item : oreBreakEvent.getDrops()) {
-                    player.getWorld().dropItemNaturally(block.getLocation(), item);
+            Collection<ItemStack> drops = oreBreakEvent.getDrops();
+            if (drops.isEmpty())
+                return;
+
+            List<Item> items = new ArrayList<>();
+            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                for (ItemStack item : drops) {
+                    items.add(player.getWorld().dropItemNaturally(block.getLocation(), item));
+                }
+            }
+            BlockDropItemEvent blockDropItemEvent = new BlockDropItemEvent(block,
+                    block.getState(),
+                    player, items);
+            Bukkit.getPluginManager().callEvent(blockDropItemEvent);
+            if (blockDropItemEvent.isCancelled()) {
+                for (Item item : items) {
+                    item.remove();
                 }
             }
         }
     }
-
-    @EventHandler
-    private void onOreBreak(OreBreakEvent e) {
-        Collection<ItemStack> drops = e.getDrops();
-
-        if (e.getType().equals(Ore.DIAMOND)) {
-            e.setCancelled(true);
-        }
-
-        drops.clear();
-
-        drops.add(new ItemStack(Material.ENDER_EYE, 32));
-    }
-
+//    private void on(DropItem)
     private boolean isOre(Block block) {
         Material type = block.getType();
         for (Material material : ore) {
@@ -90,5 +95,6 @@ public class EnviormentListener implements Listener {
         }
         return false;
     }
+
 
 }

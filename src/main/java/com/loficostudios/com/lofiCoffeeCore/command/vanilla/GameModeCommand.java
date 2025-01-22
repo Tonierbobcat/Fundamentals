@@ -1,8 +1,8 @@
-package com.loficostudios.com.lofiCoffeeCore.command;
+package com.loficostudios.com.lofiCoffeeCore.command.vanilla;
 
 import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
-import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.MultiLiteralArgument;
@@ -64,13 +64,17 @@ public class GameModeCommand extends Command {
     private void setGameMode(Player sender, Player target, GameMode gameMode) {
         if (target != null) {
             target.setGameMode(gameMode);
+            Common.sendMessage(target, Messages.GAMEMODE_SET_SELF
+                    .replace("{gamemode}", gameMode.name()));
             if (!target.equals(sender)) {
-                target.sendMessage(ColorUtils.deserialize(Messages.GAMEMODE_SET_OTHER.replace("{gamemode}", gameMode.name())));
+                Common.sendMessage(sender, Messages.GAMEMODE_SET_OTHER
+                        .replace("{gamemode}", gameMode.name())
+                        .replace("{player}", target.getName()));
             }
-            sender.sendMessage(ColorUtils.deserialize(Messages.GAMEMODE_SET_SELF.replace("{gamemode}", gameMode.name())));
             return;
         }
         sender.setGameMode(gameMode);
-        sender.sendMessage(ColorUtils.deserialize(Messages.GAMEMODE_SET_SELF.replace("{gamemode}", gameMode.name())));
+        Common.sendMessage(sender, Messages.GAMEMODE_SET_SELF
+                .replace("{gamemode}", gameMode.name()));
     }
 }

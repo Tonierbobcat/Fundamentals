@@ -5,6 +5,7 @@ import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
 import com.loficostudios.com.lofiCoffeeCore.modules.warp.Warp;
 import com.loficostudios.com.lofiCoffeeCore.modules.warp.WarpManager;
 import com.loficostudios.com.lofiCoffeeCore.modules.warp.WarpModifyResult;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
 import dev.jorel.commandapi.CommandTree;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
@@ -35,10 +36,10 @@ public class WarpsCommand extends Command {
                                     Warp warp = new Warp(sender.getLocation(), id.toLowerCase());
                                     var result = warpManager.addWarp(warp);
                                     if (!result.equals(WarpModifyResult.SUCCESS)) {
-                                        sender.sendMessage(result.getMessage().replace("{id}", id.toLowerCase()));
+                                        sender.sendMessage(ColorUtils.deserialize(result.getMessage().replace("{id}", id.toLowerCase())));
                                         return;
                                     }
-                                    sender.sendMessage(Component.text(Messages.WARP_CREATED.replace("{id}", id.toLowerCase())));
+                                    sender.sendMessage(ColorUtils.deserialize(Messages.WARP_CREATED.replace("{id}", id.toLowerCase())));
                                 })))
                 .then(new LiteralArgument("edit")
                         .then(new StringArgument("id").replaceSuggestions(ArgumentSuggestions.strings(info -> warpManager.getIds()))
@@ -52,7 +53,7 @@ public class WarpsCommand extends Command {
 
                                                     Material material = Material.valueOf(((String)args.get("material")));
                                                     var result = warpManager.editIconMaterial(id, material);
-                                                    sender.sendMessage(Component.text(result.getMessage().replace("{id}", id)));
+                                                    sender.sendMessage(ColorUtils.deserialize(result.getMessage().replace("{id}", id)));
                                                 })))
                                 .then(new LiteralArgument("name")
                                         .then(new GreedyStringArgument("text")
@@ -64,7 +65,7 @@ public class WarpsCommand extends Command {
                                                     String name = (String) args.get("text");
 
                                                     var result = warpManager.editDisplayName(id, name);
-                                                    sender.sendMessage(Component.text(result.getMessage().replace("{id}", id)));
+                                                    sender.sendMessage(ColorUtils.deserialize(result.getMessage().replace("{id}", id)));
                                                 })))
                                 .then(new LiteralArgument("location")
                                         .executesPlayer(((sender, args) -> {
@@ -73,7 +74,7 @@ public class WarpsCommand extends Command {
                                                 return;
 
                                             var result = warpManager.editLocation(id, sender.getLocation());
-                                            sender.sendMessage(Component.text(result.getMessage()));
+                                            sender.sendMessage(ColorUtils.deserialize(result.getMessage()));
                                         }))))).register();
     }
 

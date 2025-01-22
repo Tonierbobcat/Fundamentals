@@ -4,6 +4,8 @@ import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import com.loficostudios.com.lofiCoffeeCore.player.UserManager;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
@@ -52,6 +54,7 @@ public class NicknameCommand extends Command {
         String name = text != null ? text : player.getName();
         user.setDisplayName(name);
 
-        player.sendMessage(Component.text(Messages.DISPLAYNAME_CHANGED.replace("{name}", name)));
+        Common.sendMessage(player, Messages.DISPLAYNAME_CHANGED
+                .replace("{name}", name));
     }
 }

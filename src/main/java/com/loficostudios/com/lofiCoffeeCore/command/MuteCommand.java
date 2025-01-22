@@ -4,6 +4,8 @@ import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.AbstractUserManagementCommand;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import com.loficostudios.com.lofiCoffeeCore.player.UserManager;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 
 public class MuteCommand extends AbstractUserManagementCommand {
     public MuteCommand(UserManager userManager) {
@@ -23,10 +25,10 @@ public class MuteCommand extends AbstractUserManagementCommand {
         target.setMuted(muted);
 
         if (muted) {
-            target.getPlayer().sendMessage(Messages.NOW_MUTED);
+            Common.sendMessage(target, Messages.NOW_MUTED);
         }
         else {
-            target.getPlayer().sendMessage(Messages.NO_LONGER_MUTED);
+            Common.sendMessage(target, Messages.NO_LONGER_MUTED);
         }
     }
 }

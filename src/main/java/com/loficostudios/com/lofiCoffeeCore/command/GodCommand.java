@@ -5,6 +5,7 @@ import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
 import com.loficostudios.com.lofiCoffeeCore.player.user.User;
 import com.loficostudios.com.lofiCoffeeCore.player.UserManager;
 import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
@@ -40,10 +41,10 @@ public class GodCommand extends Command {
         boolean enabled = !user.isGodModeEnabled();
         user.setGodModeEnabled(enabled);
         if (enabled) {
-            player.sendMessage(ColorUtils.deserialize(Messages.GOD_ENABLED));
+            Common.sendMessage(player, Messages.GOD_ENABLED);
         }
         else
-            player.sendMessage(ColorUtils.deserialize(Messages.GOD_DISABLED));
+            Common.sendMessage(player, Messages.GOD_DISABLED);
 
     }
 }

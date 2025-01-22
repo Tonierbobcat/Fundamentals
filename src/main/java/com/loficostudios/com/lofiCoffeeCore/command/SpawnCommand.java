@@ -2,6 +2,8 @@ package com.loficostudios.com.lofiCoffeeCore.command;
 
 import com.loficostudios.com.lofiCoffeeCore.Messages;
 import com.loficostudios.com.lofiCoffeeCore.command.base.Command;
+import com.loficostudios.com.lofiCoffeeCore.utils.ColorUtils;
+import com.loficostudios.com.lofiCoffeeCore.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -20,7 +22,7 @@ public class SpawnCommand extends Command {
                     Location spawnPoint = sender.getBedSpawnLocation();
 
                     if (spawnPoint == null) {
-                        sender.sendMessage(Component.text(Messages.NO_SPAWN_TELEPORTING_WORLD_SPAWN));
+                        Common.sendMessage(sender, Messages.NO_SPAWN_TELEPORTING_WORLD_SPAWN);
                     }
                     sender.teleport(spawnPoint != null
                             ? spawnPoint
