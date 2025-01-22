@@ -29,9 +29,6 @@ import com.loficostudios.com.lofiCoffeeCore.modules.warp.WarpManager;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -102,6 +99,7 @@ public final class LofiCoffeeCore extends JavaPlugin {
         if (placeholderAPIHook) {
             getLogger().log(Level.INFO, "Hooked into PlaceholderAPI");
             new LofiCoffeeCoreExpansion().register();
+
         }
         else {
             getLogger().log(Level.WARNING, "PlaceholderAPI not installed");

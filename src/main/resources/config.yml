@@ -31,13 +31,13 @@ magnet-pickup:
   pitch: 1
 magnet-always-enabled: false
 magnet-block-drops: true
-magnet-mob-drops: true
-magnet-exp: true
+magnet-mob-drops: false
+magnet-exp: false
 #CHAT
 join-message: "&a&l+ &r{player}"
 leave-message: "&c&l- &r{player}"
-format: "%player% > %message%"
-hover-enabled: false
+format: "%player% &#AFD2E9→ &r%message%"
+hover-enabled: true
 hover:
   - "line1"
   - "line2"

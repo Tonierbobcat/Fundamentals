@@ -18,6 +18,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+
 @SuppressWarnings({"LombokSetterMayBeUsed", "LombokGetterMayBeUsed"})
 public class User extends PlayerExtension {
 
@@ -35,11 +39,13 @@ public class User extends PlayerExtension {
 
     private double money;
 
+
     @Getter
     @ApiStatus.Experimental
     private final TeleportRequestManager requestManager;
 
     private boolean flyEnabled;
+
 
     public User(OfflinePlayer player) throws PlayerDoesNotExistException {
         super(null, player.getUniqueId());
@@ -49,6 +55,8 @@ public class User extends PlayerExtension {
         this.money = config.getDouble("money");
         this.muted = config.getBoolean("muted");
         this.flyEnabled = config.getBoolean("flying");
+
+
 
         String displayNameFromConfig = config.getString("displayName");
 

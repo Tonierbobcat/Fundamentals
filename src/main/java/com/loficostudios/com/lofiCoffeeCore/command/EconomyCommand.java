@@ -64,8 +64,7 @@ public class EconomyCommand extends Command {
                                 .then(new DoubleArgument("amount")
                                         .executesPlayer((sender, args) -> {
                                             modify(sender, args, this::remove, Messages.MONEY_REMOVE_SELF, Messages.MONEY_REMOVE_OTHER);
-                                        }))))
-                .register();
+                                        })))).register();
     }
 
     private BalanceModifyResult set(User user, double amount) {
