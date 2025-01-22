@@ -55,25 +55,23 @@ public class TeleportRequestCommand extends AbstractUserManagementCommand {
                 .append(Component.text("\n"))
                 .build();
 
-//        Component accept = Component.text(" [Accept]")
-//                .clickEvent(ClickEvent.runCommand("/tpaccept " + sender.player().getName()))
-//                .color(TextColor.color(0, 255, 0))
-//                .decoration(TextDecoration.BOLD, true);
-//        Component deny = Component.text(" [Deny]")
-//                .clickEvent(ClickEvent.runCommand("/tpdeny " + sender.player().getName()))
-//                .color(TextColor.color(255, 0, 0))
-//                .decoration(TextDecoration.BOLD, true);
-
-        Component accept = Common.createButton(
+        Component accept = createButton(
                 " &a[Accept]",
                 ClickEvent.runCommand("/tpaccept " + sender.player().getName()));
-        Component deny = Common.createButton(
+        Component deny = createButton(
                 " &c[Deny]",
                 ClickEvent.runCommand("/tpdeny " + sender.player().getName()));
 
         target.getRequestManager().createRequest(sender);
 
         Common.sendMessage(target, Component.text().append(info).append(accept).append(deny).build());
+    }
+
+    private Component createButton(String label, ClickEvent e) {
+        Component text = ColorUtils.deserialize(label);
+        return Component.text()
+                .append(text).clickEvent(e)
+                .decoration(TextDecoration.BOLD, true).build();
     }
 
     @Override

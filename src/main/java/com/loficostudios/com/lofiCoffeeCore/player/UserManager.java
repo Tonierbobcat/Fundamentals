@@ -10,6 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -73,7 +74,7 @@ public class UserManager {
         });
     }
 
-    private boolean hasProfile(Player player) {
+    public boolean hasProfile(OfflinePlayer player) {
         return loadedUsers.containsKey(player.getUniqueId());
     }
 
@@ -87,6 +88,13 @@ public class UserManager {
         return loadedUsers.get(player.getUniqueId());
     }
 
+
+    public @NotNull User createUser(OfflinePlayer player) throws UserAlreadyLoadedException {
+        if (hasProfile(player))
+            throw new UserAlreadyLoadedException("User already has account");
+        return new User(player);
+    }
+
     public void handleJoin(Player player) {
         UUID uuid = player.getUniqueId();
         Logger lgr = plugin.getLogger();
@@ -98,7 +106,7 @@ public class UserManager {
         }
         else {
             try {
-                user = new User(player);
+                user = createUser(player);
                 user.setPlayer(player);
             } catch (Exception e) {
                 lgr.log(Level.SEVERE, "Could not create new user. " + e.getMessage());

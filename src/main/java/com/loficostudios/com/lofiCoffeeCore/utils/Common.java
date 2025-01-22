@@ -28,10 +28,5 @@ public class Common {
     public static void sendMessage(User user, Component message) {
         user.sendMessage(message);
     }
-    public static Component createButton(String label, ClickEvent e) {
-        Component text = ColorUtils.deserialize(label);
-        return Component.text()
-                .append(text).clickEvent(e)
-                .decoration(TextDecoration.BOLD, true).build();
-    }
+
 }

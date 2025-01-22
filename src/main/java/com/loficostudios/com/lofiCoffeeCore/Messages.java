@@ -2,6 +2,7 @@ package com.loficostudios.com.lofiCoffeeCore;
 
 import com.loficostudios.com.lofiCoffeeCore.annotation.ConfigField;
 import com.loficostudios.com.lofiCoffeeCore.api.file.impl.YamlFile;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.awt.*;
@@ -12,6 +13,9 @@ public class Messages {
 
     @ConfigField
     public static String INVALID_PLAYER = "&#7C5869Invalid Player";
+
+    @ConfigField
+    public static String INVALID_TRANSACTION = "&#7C5869Invalid Transaction";
     @ConfigField
     public static String INVALID_MATERIAL = "&#7C5869Invalid Material";
     @ConfigField
@@ -82,6 +86,8 @@ public class Messages {
     @ConfigField
     public static String DENY_TELEPORT_REQUEST = "&#7C5869You denied &#9A7197{player}&#7C5869's teleport request.";
 
+
+
     //endregion
 
     @ConfigField
@@ -93,6 +99,25 @@ public class Messages {
     @ConfigField
     public static String MAGNET_DISABLED = "&#7C5869Magnet mode is now &#9A7197disabled&#7C5869.";
     //endregion
+
+    @ConfigField
+    public static String BALANCE_SELF = "&#AFD2E9Your balance: &#9A7197{amount}&#AFD2E9.";
+    @Getter
+    public static String BALANCE_OTHERS = "&#AFD2E9{player}&#AFD2E9's balance: &#9A7197{amount}&#AFD2E9.";
+
+    @ConfigField
+    public static String MONEY_ADD_SELF = "&#AFD2E9Added &#9A7197{amount} &#AFD2E9to your balance.";
+    @ConfigField
+    public static String MONEY_ADD_OTHER = "&#AFD2E9Added &#9A7197{amount} &#AFD2E9to &#9A7197{player}&#AFD2E9's balance.";
+    @ConfigField
+    public static String MONEY_SET_SELF = "&#AFD2E9Your balance has been set to &#9A7197{amount}&#AFD2E9.";
+    @ConfigField
+    public static String MONEY_SET_OTHER = "&#AFD2E9Set &#9A7197{player}&#AFD2E9's balance to &#9A7197{amount}&#AFD2E9.";
+    @ConfigField
+    public static String MONEY_REMOVE_SELF = "&#7C5869Removed &#9A7197{amount} &#7C5869from your balance.";
+    @ConfigField
+    public static String MONEY_REMOVE_OTHER = "&#7C5869Removed &#9A7197{amount} &#7C5869from &#9A7197{player}&#7C5869's balance.";
+
 
     public static void saveConfig() {
         YamlFile file = new YamlFile("messages.yml", LofiCoffeeCore.getInstance());

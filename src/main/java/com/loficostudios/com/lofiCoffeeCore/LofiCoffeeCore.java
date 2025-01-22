@@ -13,6 +13,7 @@ import com.loficostudios.com.lofiCoffeeCore.economy.VaultEconomyProvider;
 import com.loficostudios.com.lofiCoffeeCore.exceptions.WarpModuleNotEnabledException;
 import com.loficostudios.com.lofiCoffeeCore.api.gui.GuiManager;
 import com.loficostudios.com.lofiCoffeeCore.api.gui.listeners.GuiListener;
+import com.loficostudios.com.lofiCoffeeCore.expansion.LofiCoffeeCoreExpansion;
 import com.loficostudios.com.lofiCoffeeCore.experimental.*;
 import com.loficostudios.com.lofiCoffeeCore.listeners.GodModeListener;
 import com.loficostudios.com.lofiCoffeeCore.listeners.MagnetListener;
@@ -28,6 +29,9 @@ import com.loficostudios.com.lofiCoffeeCore.modules.warp.WarpManager;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import lombok.Getter;
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -62,9 +66,6 @@ public final class LofiCoffeeCore extends JavaPlugin {
         Instance = this;
     }
 
-    @Getter
-    private boolean papiHook;
-
     private final List<IReloadable> reloadTargets = new ArrayList<>();
 
     @Override
@@ -92,9 +93,15 @@ public final class LofiCoffeeCore extends JavaPlugin {
         CommandAPI.onEnable();
         createConfigs();
 
-        papiHook = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
-        if (papiHook) {
+        boolean placeholderAPIHook = false;
+        try {
+            Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+            placeholderAPIHook = true;
+        } catch (ClassNotFoundException ignore) {
+        }
+        if (placeholderAPIHook) {
             getLogger().log(Level.INFO, "Hooked into PlaceholderAPI");
+            new LofiCoffeeCoreExpansion().register();
         }
         else {
             getLogger().log(Level.WARNING, "PlaceholderAPI not installed");
@@ -148,7 +155,11 @@ public final class LofiCoffeeCore extends JavaPlugin {
 
         commands.forEach((name, command) -> {
             if (enabledCommands.contains(name)) {
-                command.register();
+                try {
+                    command.register();
+                } catch (Exception e) {
+                    getLogger().log(Level.SEVERE, "Could not register '" + name + "' command." + e.getMessage());
+                }
             }
         });
     }
@@ -178,10 +189,10 @@ public final class LofiCoffeeCore extends JavaPlugin {
                 new EnviormentListener(this),
                 new GuiListener(this.guiManager)
         ).forEach(listener -> {
+            Bukkit.getServer().getPluginManager().registerEvents(listener, this);
             if (listener instanceof IReloadable) {
                 reloadTargets.add((IReloadable) listener);
             }
-            Bukkit.getServer().getPluginManager().registerEvents(listener, this);
         });
 
         if (afkModuleEnabled) {
