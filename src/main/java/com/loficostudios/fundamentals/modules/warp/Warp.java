@@ -2,7 +2,8 @@ package com.loficostudios.fundamentals.modules.warp;
 
 import com.loficostudios.fundamentals.modules.warp.event.WarpEvent;
 import com.loficostudios.fundamentals.utils.Common;
-import com.loficostudios.melodyapi.gui.GuiIcon;
+
+import com.loficostudios.melodyapi.gui.guiicon.GuiIcon;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.format.TextDecoration;

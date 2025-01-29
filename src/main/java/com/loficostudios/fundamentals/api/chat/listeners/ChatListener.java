@@ -83,7 +83,7 @@ public class ChatListener implements Listener {
         List<String> lines = provider.getHoverLines();
 
         if (!lines.isEmpty()) {
-            StringBuilder text = new StringBuilder(lines.getFirst());
+            StringBuilder text = new StringBuilder(lines.get(0));
 
             int remaining = WIDTH - text.length();
 

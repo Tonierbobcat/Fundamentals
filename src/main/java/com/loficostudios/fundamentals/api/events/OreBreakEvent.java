@@ -38,32 +38,32 @@ public class OreBreakEvent extends BlockEvent implements Cancellable {
         this.drops = drops;
 
         switch (block.getType()) {
-            case Material.NETHER_QUARTZ_ORE:
+            case NETHER_QUARTZ_ORE:
                 type = Ore.QUARTZ;
                 break;
-            case Material.COPPER_ORE:
-            case Material.DEEPSLATE_COPPER_ORE:
+            case COPPER_ORE:
+            case DEEPSLATE_COPPER_ORE:
                 type = Ore.COPPER;
                 break;
-            case Material.COAL_ORE:
-            case Material.DEEPSLATE_COAL_ORE:
+            case COAL_ORE:
+            case DEEPSLATE_COAL_ORE:
                 type = Ore.COAL;
                 break;
-            case Material.IRON_ORE:
-            case Material.DEEPSLATE_IRON_ORE:
+            case IRON_ORE:
+            case DEEPSLATE_IRON_ORE:
                 type = Ore.IRON;
                 break;
-            case Material.GOLD_ORE:
-            case Material.DEEPSLATE_GOLD_ORE:
-            case Material.NETHER_GOLD_ORE:
+            case GOLD_ORE:
+            case DEEPSLATE_GOLD_ORE:
+            case NETHER_GOLD_ORE:
                 type = Ore.GOLD;
                 break;
-            case Material.EMERALD_ORE:
-            case Material.DEEPSLATE_EMERALD_ORE:
+            case EMERALD_ORE:
+            case DEEPSLATE_EMERALD_ORE:
                 type = Ore.EMERALD;
                 break;
-            case Material.DIAMOND_ORE:
-            case Material.DEEPSLATE_DIAMOND_ORE:
+            case DIAMOND_ORE:
+            case DEEPSLATE_DIAMOND_ORE:
                 type = Ore.DIAMOND;
                 break;
             default:
