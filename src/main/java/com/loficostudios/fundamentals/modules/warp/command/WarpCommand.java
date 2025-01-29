@@ -1,5 +1,7 @@
 package com.loficostudios.fundamentals.modules.warp.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
+import com.loficostudios.fundamentals.command.FundamentalsCommand;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.modules.warp.WarpGUI;
 import com.loficostudios.fundamentals.modules.warp.WarpManager;
@@ -9,11 +11,12 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 
-public class WarpCommand extends Command {
+public class WarpCommand extends FundamentalsCommand {
 
     private final WarpManager warpManager;
 
-    public WarpCommand(WarpManager warpManager) {
+    public WarpCommand(FundamentalsPlugin plugin, WarpManager warpManager) {
+        super(plugin);
         this.warpManager = warpManager;
     }
 
@@ -31,7 +34,7 @@ public class WarpCommand extends Command {
                     var id = (String) args.get("id");
 
                     if (id == null) {
-                        new WarpGUI().open(sender);
+                        new WarpGUI(plugin).open(sender);
                         return;
                     }
                     var warp = warpManager.getWarp(id);

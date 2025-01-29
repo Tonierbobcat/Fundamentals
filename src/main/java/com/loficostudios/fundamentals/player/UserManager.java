@@ -62,7 +62,7 @@ public class UserManager {
                     OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                     User user;
                     try {
-                        user = new User(player);
+                        user = new User(player, plugin);
                     } catch (Exception e) {
                         lgr.log(Level.SEVERE, "Could not load profile because " + e.getMessage());
                         return;
@@ -92,7 +92,7 @@ public class UserManager {
     public @NotNull User createUser(OfflinePlayer player) throws UserAlreadyLoadedException {
         if (hasProfile(player))
             throw new UserAlreadyLoadedException("User already has account");
-        return new User(player);
+        return new User(player, plugin);
     }
 
     public void handleJoin(Player player) {

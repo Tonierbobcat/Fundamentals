@@ -1,5 +1,7 @@
 package com.loficostudios.fundamentals.modules.afk.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
+import com.loficostudios.fundamentals.command.FundamentalsCommand;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.modules.afk.AfkChangeReason;
 import com.loficostudios.fundamentals.player.user.User;
@@ -9,11 +11,12 @@ import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.executors.CommandArguments;
 import org.bukkit.entity.Player;
 
-public class AFKCommand extends Command {
+public class AFKCommand extends FundamentalsCommand {
 
     private final UserManager userManager;
 
-    public AFKCommand(UserManager userManager) {
+    public AFKCommand(FundamentalsPlugin plugin, UserManager userManager) {
+        super(plugin);
         this.userManager = userManager;
     }
 

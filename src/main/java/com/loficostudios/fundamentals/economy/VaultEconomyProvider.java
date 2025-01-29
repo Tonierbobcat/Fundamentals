@@ -22,7 +22,7 @@ public class VaultEconomyProvider implements net.milkbowl.vault.economy.Economy 
     private @NotNull User getUser(OfflinePlayer player) throws UserDoesNotExistException {
         if (player == null)
             throw new UserDoesNotExistException("Player does not exist");
-        User user = FundamentalsPlugin.getInstance().getUserManager().getUser(player);
+        User user = plugin.getUserManager().getUser(player);
         if (user == null)
             throw new UserDoesNotExistException("User does not exist");
         return user;
@@ -209,9 +209,9 @@ public class VaultEconomyProvider implements net.milkbowl.vault.economy.Economy 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
         try {
-            if (FundamentalsPlugin.getInstance().getUserManager().hasProfile(offlinePlayer))
+            if (plugin.getUserManager().hasProfile(offlinePlayer))
                 return true;
-            return FundamentalsPlugin.getInstance().getUserManager().createUser(offlinePlayer) != null;
+            return plugin.getUserManager().createUser(offlinePlayer) != null;
         } catch (Exception e) {
             return false;
         }

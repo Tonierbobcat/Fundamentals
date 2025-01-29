@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 
-@ApiStatus.Experimental
 public class MagnetListener implements Listener, IReloadable {
 
     private final FundamentalsPlugin plugin;

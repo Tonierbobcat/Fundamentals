@@ -1,12 +1,17 @@
 package com.loficostudios.fundamentals.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.bukkit.Location;
 
-public class SpawnCommand extends Command {
+public class SpawnCommand extends FundamentalsCommand {
+    public SpawnCommand(FundamentalsPlugin plugin) {
+        super(plugin);
+    }
+
     @Override
     protected String getIdentifier() {
         return "spawn";

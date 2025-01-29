@@ -1,5 +1,6 @@
 package com.loficostudios.fundamentals.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.player.user.User;
@@ -9,11 +10,12 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
 
-public class GodCommand extends Command {
+public class GodCommand extends FundamentalsCommand {
 
     private final UserManager userManager;
 
-    public GodCommand(UserManager userManager) {
+    public GodCommand(FundamentalsPlugin plugin, UserManager userManager) {
+        super(plugin);
         this.userManager = userManager;
     }
     @Override

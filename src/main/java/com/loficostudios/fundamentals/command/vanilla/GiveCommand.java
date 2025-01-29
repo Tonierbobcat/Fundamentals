@@ -1,6 +1,8 @@
 package com.loficostudios.fundamentals.command.vanilla;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
+import com.loficostudios.fundamentals.command.FundamentalsCommand;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.utils.Common;
 import dev.jorel.commandapi.CommandAPI;
@@ -11,7 +13,11 @@ import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class GiveCommand extends Command {
+public class GiveCommand extends FundamentalsCommand {
+
+    public GiveCommand(FundamentalsPlugin plugin) {
+        super(plugin);
+    }
 
     @Override
     public void register() {

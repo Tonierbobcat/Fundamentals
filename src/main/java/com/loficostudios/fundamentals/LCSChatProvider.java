@@ -46,16 +46,26 @@ public class LCSChatProvider implements ChatProvider, IReloadable {
     }
 
     @Override
+    public String getPlayerName(Player player) {
+        return player.getName();
+    }
+
+    @Override
+    public String getPlayerDisplayName(Player player) {
+        return player.getDisplayName();
+    }
+
+    //    @Override
     public @NotNull List<String> getHoverLines() {
         return config.getStringList("hover");
     }
 
-    @Override
+//    @Override
     public boolean isHoverMessageEnabled() {
         return config.getBoolean("hover-enabled");
     }
 
-    @Override
+//    @Override
     public ClickEvent getClickEvent(Player player) {
         return ClickEvent.suggestCommand("/msg " + player.getName());
     }

@@ -21,32 +21,26 @@ import org.jetbrains.annotations.ApiStatus;
 @SuppressWarnings({"LombokSetterMayBeUsed", "LombokGetterMayBeUsed"})
 public class User extends PlayerExtension {
 
+    private final FundamentalsPlugin plugin;
+
     private final YamlFile playerFile;
     private final FileConfiguration config;
-
-    private boolean muted;
-
-    private String displayName;
-
-    private boolean godModeEnabled;
-    private boolean afk;
-
-    private boolean magnetEnabled;
-
-    private double money;
-
-
-    @Getter
-    @ApiStatus.Experimental
     private final TeleportRequestManager requestManager;
 
+    private String displayName;
+    private double money;
+    private boolean muted;
+    private boolean godModeEnabled;
+    private boolean afk;
+    private boolean magnetEnabled;
     private boolean flyEnabled;
 
-
-    public User(OfflinePlayer player) throws PlayerDoesNotExistException {
+    public User(OfflinePlayer player, FundamentalsPlugin plugin) throws PlayerDoesNotExistException {
         super(null, player.getUniqueId());
 
-        this.playerFile = new YamlFile("players/" + uuid + ".yml", FundamentalsPlugin.getInstance());
+        this.plugin = plugin;
+
+        this.playerFile = new YamlFile("players/" + uuid + ".yml", plugin);
         this.config = playerFile.getConfig();
         this.money = config.getDouble("money");
         this.muted = config.getBoolean("muted");
@@ -128,13 +122,13 @@ public class User extends PlayerExtension {
         save();
     }
     public boolean isAfk() {
-        if (!FundamentalsPlugin.getInstance().isAfkModuleEnabled()) {
+        if (!plugin.isAfkModuleEnabled()) {
             throw new AFKModuleNotEnabledException("AFK Module is not enabled!");
         }
         return afk;
     }
     public void setAfk(boolean value, AfkChangeReason reason) {
-        if (!FundamentalsPlugin.getInstance().isAfkModuleEnabled()) {
+        if (!plugin.isAfkModuleEnabled()) {
             throw new AFKModuleNotEnabledException("AFK Module is not enabled!");
         }
         boolean wasAfk = afk;
@@ -145,7 +139,7 @@ public class User extends PlayerExtension {
         }
     }
     public void setAfk(boolean value) {
-        if (!FundamentalsPlugin.getInstance().isAfkModuleEnabled()) {
+        if (!plugin.isAfkModuleEnabled()) {
             throw new AFKModuleNotEnabledException("AFK Module is not enabled!");
         }
         boolean wasAfk = afk;
@@ -159,5 +153,9 @@ public class User extends PlayerExtension {
     }
     public void setMagnetEnabled(boolean value) {
         this.magnetEnabled = value;
+    }
+
+    public TeleportRequestManager getRequestManager() {
+        return requestManager;
     }
 }

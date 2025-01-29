@@ -1,5 +1,6 @@
 package com.loficostudios.fundamentals.command.teleport;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.command.base.AbstractUserManagementCommand;
 import com.loficostudios.fundamentals.player.user.User;
 import com.loficostudios.fundamentals.player.UserManager;
@@ -11,8 +12,8 @@ import org.bukkit.entity.Player;
 
 public class TeleportAcceptCommand extends AbstractUserManagementCommand {
 
-    public TeleportAcceptCommand(UserManager userManager) {
-        super(userManager);
+    public TeleportAcceptCommand(FundamentalsPlugin plugin, UserManager userManager) {
+        super(plugin, userManager);
     }
 
     @Override

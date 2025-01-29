@@ -4,6 +4,7 @@ import com.loficostudios.fundamentals.annotation.ConfigField;
 import com.loficostudios.melodyapi.file.impl.YamlFile;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 
@@ -118,8 +119,8 @@ public class Messages {
     public static String MONEY_REMOVE_OTHER = "&#7C5869Removed &#9A7197{amount} &#7C5869from &#9A7197{player}&#7C5869's balance.";
 
 
-    public static void saveConfig() {
-        YamlFile file = new YamlFile("messages.yml", FundamentalsPlugin.getInstance());
+    public static void saveConfig(JavaPlugin plugin) {
+        YamlFile file = new YamlFile("messages.yml", plugin);
         FileConfiguration config = file.getConfig();
         for (Field field : Messages.class.getDeclaredFields()) {
             if (field.isAnnotationPresent(ConfigField.class)) {

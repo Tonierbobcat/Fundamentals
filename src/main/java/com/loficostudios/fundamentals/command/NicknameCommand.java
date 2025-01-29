@@ -1,5 +1,6 @@
 package com.loficostudios.fundamentals.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.player.user.User;
@@ -10,12 +11,13 @@ import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
 import org.bukkit.entity.Player;
 
-public class NicknameCommand extends Command {
+public class NicknameCommand extends FundamentalsCommand {
 
 
     private final UserManager userManager;
 
-    public NicknameCommand(UserManager userManager) {
+    public NicknameCommand(FundamentalsPlugin plugin, UserManager userManager) {
+        super(plugin);
         this.userManager = userManager;
     }
 

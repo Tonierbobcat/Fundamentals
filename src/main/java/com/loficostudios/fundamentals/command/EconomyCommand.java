@@ -3,6 +3,7 @@ package com.loficostudios.fundamentals.command;
 import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
 import com.loficostudios.fundamentals.command.base.Command;
+import com.loficostudios.fundamentals.player.UserManager;
 import com.loficostudios.fundamentals.player.user.User;
 import com.loficostudios.fundamentals.utils.Common;
 import com.loficostudios.fundamentals.utils.Economy;
@@ -16,7 +17,14 @@ import org.bukkit.entity.Player;
 
 import java.util.function.BiFunction;
 
-public class EconomyCommand extends Command {
+public class EconomyCommand extends FundamentalsCommand {
+
+    private final UserManager userManager;
+
+    public EconomyCommand(FundamentalsPlugin plugin, UserManager userManager) {
+        super(plugin);
+        this.userManager = userManager;
+    }
 
     private enum BalanceModifyResult {
         SUCCESS("Success"),
@@ -41,7 +49,7 @@ public class EconomyCommand extends Command {
                 .withAliases("eco")
                 .then(new LiteralArgument("reset")
                         .executesPlayer((sender, args) -> {
-                            for (User user : FundamentalsPlugin.getInstance().getUserManager().getLoadedUsers()) {
+                            for (User user : userManager.getLoadedUsers()) {
 //                                sender.sendMessage("Reset " + Bukkit.getOfflinePlayer(user.getUniqueId()).getName());
                                 Economy.setMoney(user, 0);
                             }
@@ -108,7 +116,7 @@ public class EconomyCommand extends Command {
 
         if (target != null) {
 
-            var result = onCommand.apply(FundamentalsPlugin.getInstance().getUserManager().getUser(target), amount);
+            var result = onCommand.apply(userManager.getUser(target), amount);
             if (!result.equals(BalanceModifyResult.SUCCESS)) {
                 Common.sendMessage(sender, result.getMessage()
                         .replace("{amount}", "" + amount));
@@ -125,7 +133,7 @@ public class EconomyCommand extends Command {
 
             return;
         }
-        User user = FundamentalsPlugin.getInstance().getUserManager().getUser(sender);
+        User user = userManager.getUser(sender);
         var result = onCommand.apply(user, amount);
         if (!result.equals(BalanceModifyResult.SUCCESS)) {
             Common.sendMessage(sender, result.getMessage()

@@ -1,5 +1,6 @@
 package com.loficostudios.fundamentals.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
 import com.loficostudios.fundamentals.command.base.AbstractUserManagementCommand;
 import com.loficostudios.fundamentals.player.user.User;
@@ -7,8 +8,8 @@ import com.loficostudios.fundamentals.player.UserManager;
 import com.loficostudios.fundamentals.utils.Common;
 
 public class MuteCommand extends AbstractUserManagementCommand {
-    public MuteCommand(UserManager userManager) {
-        super(userManager);
+    public MuteCommand(FundamentalsPlugin plugin, UserManager userManager) {
+        super(plugin, userManager);
     }
 
     @Override

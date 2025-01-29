@@ -18,9 +18,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class AFKListener implements Listener {
 
     private final UserManager userManager;
-
-    public AFKListener(UserManager userManager) {
+    private final FundamentalsPlugin plugin;
+    public AFKListener(FundamentalsPlugin plugin, UserManager userManager) {
         this.userManager = userManager;
+        this.plugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -77,7 +78,7 @@ public class AFKListener implements Listener {
             public void run() {
                 user.setAfk(false, AfkChangeReason.CHAT);
             }
-        }.runTask(FundamentalsPlugin.getInstance());
+        }.runTask(plugin);
     }
 
 //    @EventHandler(priority = EventPriority.LOWEST)

@@ -3,7 +3,6 @@ package com.loficostudios.fundamentals.listeners;
 
 import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
-import com.loficostudios.fundamentals.api.events.PlayerKillPlayerEvent;
 import com.loficostudios.fundamentals.player.UserManager;
 import com.loficostudios.fundamentals.player.user.User;
 import com.loficostudios.fundamentals.utils.Common;
@@ -50,25 +49,25 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
-    private void onPlayerDamage(final EntityDamageByEntityEvent e) {
-        if (e.isCancelled())
-            return;
-        if (!(e.getDamager() instanceof Player damager) || !(e.getEntity() instanceof Player victim))
-            return;
-
-        if((victim.getHealth()-e.getDamage()) <= 0) {
-            Player killer = damager;
-            PlayerKillPlayerEvent playerKillEvent = new PlayerKillPlayerEvent(killer, victim);
-
-            Bukkit.getPluginManager().callEvent(playerKillEvent);
-            if (playerKillEvent.isCancelled()) {
-                e.setCancelled(true);
-                return;
-            }
-            killer.sendMessage("onPlayerDamage");
-        }
-    }
+//    @EventHandler
+//    private void onPlayerDamage(final EntityDamageByEntityEvent e) {
+//        if (e.isCancelled())
+//            return;
+//        if (!(e.getDamager() instanceof Player damager) || !(e.getEntity() instanceof Player victim))
+//            return;
+//
+//        if((victim.getHealth()-e.getDamage()) <= 0) {
+//            Player killer = damager;
+//            PlayerKillPlayerEvent playerKillEvent = new PlayerKillPlayerEvent(killer, victim);
+//
+//            Bukkit.getPluginManager().callEvent(playerKillEvent);
+//            if (playerKillEvent.isCancelled()) {
+//                e.setCancelled(true);
+//                return;
+//            }
+//            killer.sendMessage("onPlayerDamage");
+//        }
+//    }
 
 
 

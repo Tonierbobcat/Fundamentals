@@ -45,8 +45,8 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 
     public static final String namespace = "lcs";
 
-    @Getter
-    private static FundamentalsPlugin Instance;
+//    @Getter
+//    private static FundamentalsPlugin Instance;
 
     private WarpManager warpManager;
     @Getter
@@ -60,9 +60,9 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 
     private final List<IReloadable> reloadTargets = new ArrayList<>();
 
-    public FundamentalsPlugin() {
-        Instance = this;
-    }
+//    public FundamentalsPlugin() {
+//        Instance = this;
+//    }
 
     @Override
     protected void onStart() {
@@ -84,6 +84,8 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
             getLogger().log(Level.WARNING, "PlaceholderAPI not installed");
         }
 
+        this.queryChatProvider();
+
         MongoDBUtils.initialize(new MongoDBConfiguration(
                     "lcs",
                     "localhost"
@@ -94,8 +96,8 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
         }
         this.userManager = new UserManager(this);
 
-        registerCommands();
-        registerListeners();
+        this.registerCommands();
+        this.registerListeners();
     }
 
     @Override
@@ -111,7 +113,7 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 
     private void createConfigs() {
         saveDefaultConfig();
-        Messages.saveConfig();
+        Messages.saveConfig(this);
 
         FileConfiguration config = getConfig();
         warpModuleEnabled = config.getBoolean("modules." + "warps");
@@ -129,31 +131,31 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 
         Map<String, Command> commands = new HashMap<>();
 
-        commands.put("god", new GodCommand(userManager));
-        commands.put("nickname", new NicknameCommand(userManager));
-        commands.put("heal", new HealCommand());
-        commands.put("spawn", new SpawnCommand());
-        commands.put("gamemode", new GameModeCommand());
-        commands.put("give", new GiveCommand());
-        commands.put("enchant", new EnchantCommand());
-        commands.put("economy", new EconomyCommand());
-        commands.put("balance", new BalanceCommand());
-        commands.put("reload", new ReloadCommand());
-        commands.put("mute", new MuteCommand(userManager));
-        commands.put("tpaccept", new TeleportAcceptCommand(userManager));
-        commands.put("tpdeny", new TeleportDenyCommand(userManager));
-        commands.put("tprequest", new TeleportRequestCommand(userManager));
-        commands.put("fly", new FlyCommand());
+        commands.put("god", new GodCommand(this, userManager));
+        commands.put("nickname", new NicknameCommand(this, userManager));
+        commands.put("heal", new HealCommand(this));
+        commands.put("spawn", new SpawnCommand(this));
+        commands.put("gamemode", new GameModeCommand(this));
+        commands.put("give", new GiveCommand(this));
+        commands.put("enchant", new EnchantCommand(this));
+        commands.put("economy", new EconomyCommand(this, userManager));
+        commands.put("balance", new BalanceCommand(this, userManager));
+        commands.put("reload", new ReloadCommand(this));
+        commands.put("mute", new MuteCommand(this, userManager));
+        commands.put("tpaccept", new TeleportAcceptCommand(this, userManager));
+        commands.put("tpdeny", new TeleportDenyCommand(this, userManager));
+        commands.put("tprequest", new TeleportRequestCommand(this, userManager));
+        commands.put("fly", new FlyCommand(this));
 
-        commands.put("magnet", new MagnetCommand());
+        commands.put("magnet", new MagnetCommand(this));
 
         if (afkModuleEnabled) {
-            commands.put("afk", new AFKCommand(this.userManager));
+            commands.put("afk", new AFKCommand(this, this.userManager));
         }
 
         if (warpModuleEnabled) {
-            commands.put("warp", new WarpCommand(this.warpManager));
-            commands.put("warps", new WarpsCommand(this.warpManager));
+            commands.put("warp", new WarpCommand(this, this.warpManager));
+            commands.put("warps", new WarpsCommand(this, this.warpManager));
         }
 
         commands.forEach((name, command) -> {
@@ -167,22 +169,29 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
         });
     }
 
-    private void registerListeners() {
-        //region CHAT_PROVIDER && CHAT_LISTENER
+    private void queryChatProvider() {
         ServicesManager servicesManager = getServer().getServicesManager();
         RegisteredServiceProvider<ChatProvider> rsp = servicesManager.getRegistration(ChatProvider.class);
-        var chatProviderImpl = rsp != null
-                ? rsp.getProvider()
-                : null;
-        if (chatProviderImpl == null) {
-            chatProviderImpl = new LCSChatProvider(this);
-            reloadTargets.add((IReloadable) chatProviderImpl);
+
+        getLogger().info("ChatProvider class loaded from: " + com.loficostudios.fundamentals.api.chat.ChatProvider.class.getClassLoader());
+
+        if (rsp == null) {
+            getLogger().log(Level.WARNING, "No chat provider found");
+            return;
         }
-        else {
-            if (chatProviderImpl instanceof IReloadable)
-                this.reloadTargets.add((IReloadable) chatProviderImpl);
-        }
+
+        var chatProviderImpl = rsp.getProvider();
+
+        getLogger().log(Level.INFO, "Found registered chat provider!");
+
+        if (chatProviderImpl instanceof IReloadable)
+            this.reloadTargets.add((IReloadable) chatProviderImpl);
         getServer().getPluginManager().registerEvents(new ChatListener(chatProviderImpl), this);
+    }
+
+    private void registerListeners() {
+        //region CHAT_PROVIDER && CHAT_LISTENER
+
         //endregion
 
         Arrays.asList(
@@ -199,7 +208,7 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 
         if (afkModuleEnabled) {
             Bukkit.getServer().getPluginManager()
-                    .registerEvents(new AFKListener(userManager), this);
+                    .registerEvents(new AFKListener(this, userManager), this);
         }
     }
 
@@ -208,7 +217,7 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
         long startTimeMillis = System.currentTimeMillis();
         this.reloadConfig();
 
-        Messages.saveConfig();
+        Messages.saveConfig(this);
 
         for (IReloadable clazz : reloadTargets) {
             clazz.reload();

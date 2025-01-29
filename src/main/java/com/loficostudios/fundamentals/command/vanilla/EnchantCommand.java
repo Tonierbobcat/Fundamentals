@@ -1,6 +1,8 @@
 package com.loficostudios.fundamentals.command.vanilla;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
+import com.loficostudios.fundamentals.command.FundamentalsCommand;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.utils.Common;
 import dev.jorel.commandapi.CommandAPI;
@@ -12,7 +14,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class EnchantCommand extends Command {
+public class EnchantCommand extends FundamentalsCommand {
+    public EnchantCommand(FundamentalsPlugin plugin) {
+        super(plugin);
+    }
+
     @Override
     public void register() {
         CommandAPI.unregister("enchant");

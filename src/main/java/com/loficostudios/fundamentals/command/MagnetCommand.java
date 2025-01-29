@@ -8,14 +8,18 @@ import com.loficostudios.fundamentals.utils.Common;
 import dev.jorel.commandapi.CommandAPICommand;
 import org.jetbrains.annotations.ApiStatus;
 
-@ApiStatus.Experimental
-public class MagnetCommand extends Command {
+public class MagnetCommand extends FundamentalsCommand {
+
+    public MagnetCommand(FundamentalsPlugin plugin) {
+        super(plugin);
+    }
+
     @Override
     public void register() {
         new CommandAPICommand(getIdentifier())
                 .withPermission(getPermission())
                 .executesPlayer(((player, args) -> {
-                    User user = FundamentalsPlugin.getInstance().getUserManager().getUser(player);
+                    User user = plugin.getUserManager().getUser(player);
                     toggleMagnet(user);
                 })).register();
     }

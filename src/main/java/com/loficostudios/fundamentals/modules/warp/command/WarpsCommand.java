@@ -1,6 +1,8 @@
 package com.loficostudios.fundamentals.modules.warp.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
+import com.loficostudios.fundamentals.command.FundamentalsCommand;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.modules.warp.Warp;
 import com.loficostudios.fundamentals.modules.warp.WarpManager;
@@ -15,9 +17,10 @@ import org.bukkit.Material;
 
 import java.util.Arrays;
 
-public class WarpsCommand extends Command {
+public class WarpsCommand extends FundamentalsCommand {
     private final WarpManager warpManager;
-    public WarpsCommand(WarpManager warpManager) {
+    public WarpsCommand(FundamentalsPlugin plugin, WarpManager warpManager) {
+        super(plugin);
         this.warpManager = warpManager;
     }
     @Override

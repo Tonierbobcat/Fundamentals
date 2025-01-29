@@ -25,7 +25,6 @@ public class FileUtils {
         return fileName; // Return original string if no period is found
     }
     private static String serializeString(Object object) {
-        Logger lgr = FundamentalsPlugin.getInstance().getLogger();
         try {
             ByteArrayOutputStream io = new ByteArrayOutputStream();
             BukkitObjectOutputStream outputStream = new BukkitObjectOutputStream(io);
@@ -35,15 +34,11 @@ public class FileUtils {
 
             return Base64.getEncoder().encodeToString(obj);
         } catch (IOException e) {
-            lgr.log(
-                    Level.SEVERE,
-                    e.getMessage());
+            Debug.logError(e.getMessage());
             return null;
         }
     }
     private static Object deserializeString(String string, Class<?> clazz) {
-        Logger lgr = FundamentalsPlugin.getInstance().getLogger();
-
         byte[] obj = Base64.getDecoder().decode(string);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(obj);
 
@@ -56,10 +51,10 @@ public class FileUtils {
                 throw new ClassNotFoundException("Deserialized object is not of the expected type");
             }
         } catch (IOException e) {
-            lgr.log(Level.SEVERE, e.getMessage());
+            Debug.logError(e.getMessage());
             return null;
         } catch (ClassNotFoundException ex) {
-            lgr .log(Level.SEVERE, "Cannot decode base64 byte array to ItemStack");
+            Debug.logError("Cannot decode base64 byte array to ItemStack");
             return null;
         }
     }

@@ -9,8 +9,11 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import org.bukkit.entity.Player;
 
-public class FlyCommand extends Command {
+public class FlyCommand extends FundamentalsCommand {
 
+    public FlyCommand(FundamentalsPlugin plugin) {
+        super(plugin);
+    }
 
     @Override
     protected String getIdentifier() {
@@ -34,7 +37,7 @@ public class FlyCommand extends Command {
 
     private void toggleFlight(Player player) {
         boolean enabled = !player.getAllowFlight();
-        User user = FundamentalsPlugin.getInstance().getUserManager().getUser(player);
+        User user = plugin.getUserManager().getUser(player);
 
 
         user.setFlyEnabled(enabled);

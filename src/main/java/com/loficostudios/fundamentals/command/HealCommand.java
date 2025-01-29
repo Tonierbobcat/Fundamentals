@@ -1,5 +1,6 @@
 package com.loficostudios.fundamentals.command;
 
+import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.Messages;
 import com.loficostudios.fundamentals.command.base.Command;
 import com.loficostudios.fundamentals.utils.Common;
@@ -10,7 +11,11 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 
-public class HealCommand extends Command {
+public class HealCommand extends FundamentalsCommand {
+
+    public HealCommand(FundamentalsPlugin plugin) {
+        super(plugin);
+    }
 
     @Override
     protected String getIdentifier() {
