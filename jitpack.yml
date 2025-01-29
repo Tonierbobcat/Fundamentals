@@ -1,2 +1,6 @@
 jdk:
   - amazon-corretto-17
+before_install:
+  - apt-get update
+  - apt-get install -y maven
+  - mvn -version
