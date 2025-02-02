@@ -25,8 +25,6 @@ import com.loficostudios.fundamentals.modules.warp.command.WarpCommand;
 import com.loficostudios.fundamentals.modules.warp.command.WarpsCommand;
 import com.loficostudios.fundamentals.player.UserManager;
 import com.loficostudios.fundamentals.modules.warp.WarpManager;
-import com.loficostudios.fundamentals.utils.database.MongoDBConfiguration;
-import com.loficostudios.fundamentals.utils.database.MongoDBUtils;
 import com.loficostudios.melodyapi.MelodyPlugin;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
@@ -85,11 +83,6 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
         }
 
         this.queryChatProvider();
-
-        MongoDBUtils.initialize(new MongoDBConfiguration(
-                    "lcs",
-                    "localhost"
-                ));
 
         if (warpModuleEnabled) {
             this.warpManager = new WarpManager(this);
@@ -175,18 +168,22 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 
         getLogger().info("ChatProvider class loaded from: " + com.loficostudios.fundamentals.api.chat.ChatProvider.class.getClassLoader());
 
+        ChatProvider provider;
+
         if (rsp == null) {
-            getLogger().log(Level.WARNING, "No chat provider found");
+            getLogger().log(Level.WARNING, "No chat provider found. Registering default");
+            provider = new LCSChatProvider(this);
+            servicesManager.register(ChatProvider.class, provider, this, ServicePriority.Normal);
             return;
         }
+        else {
+            getLogger().log(Level.INFO, "Found registered chat provider!");
+            provider = rsp.getProvider();
+        }
 
-        var chatProviderImpl = rsp.getProvider();
-
-        getLogger().log(Level.INFO, "Found registered chat provider!");
-
-        if (chatProviderImpl instanceof IReloadable)
-            this.reloadTargets.add((IReloadable) chatProviderImpl);
-        getServer().getPluginManager().registerEvents(new ChatListener(chatProviderImpl), this);
+        if (provider instanceof IReloadable)
+            this.reloadTargets.add((IReloadable) provider);
+        getServer().getPluginManager().registerEvents(new ChatListener(provider), this);
     }
 
     private void registerListeners() {
