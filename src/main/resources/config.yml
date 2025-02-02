@@ -34,11 +34,6 @@ magnet-block-drops: true
 magnet-mob-drops: false
 magnet-exp: false
 #CHAT
-join-message: "&a&l+ &r{player}"
-leave-message: "&c&l- &r{player}"
-format: "%player% &#AFD2E9→ &r%message%"
-hover-enabled: true
-hover:
-  - "line1"
-  - "line2"
-  - "line3"
+join-message: "<green><bold>+ <reset>{player}"
+leave-message: "<red><bold>- <reset>{player}"
+format: "{player} <color:#AFD2E9>→ <reset>{message}"
