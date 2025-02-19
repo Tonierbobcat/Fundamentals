@@ -44,6 +44,7 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
     </repositories>
 
     <dependencies>
@@ -97,14 +98,8 @@
         <dependency>
             <groupId>com.github.Tonierbobcat</groupId>
             <artifactId>MelodyAPI</artifactId>
-            <version>0.1.6</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.7</version>
+            <version>0.1.7</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -2,6 +2,7 @@ package com.loficostudios.fundamentals.listeners;
 
 import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.player.user.User;
+import com.loficostudios.fundamentals.utils.Debug;
 import io.papermc.paper.event.entity.EntityDamageItemEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,9 +21,18 @@ public class GodModeListener implements Listener {
 
     @EventHandler
     private void onEntityDamage(EntityDamageEvent e) {
-        if (!(e.getEntity() instanceof Player player))
+
+        var entity = e.getEntity();
+        if(entity.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
+        if (!(entity instanceof Player player))
             return;
         User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
+
         if (!user.isGodModeEnabled())
             return;
         e.setCancelled(true);
@@ -30,9 +40,17 @@ public class GodModeListener implements Listener {
 
     @EventHandler
     private void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        if (!(e.getEntity() instanceof Player player))
+        var entity = e.getEntity();
+        if(entity.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
+        if (!(entity instanceof Player player))
             return;
         User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
+
         if (!user.isGodModeEnabled())
             return;
         e.setCancelled(true);
@@ -40,9 +58,17 @@ public class GodModeListener implements Listener {
 
     @EventHandler
     private void onEntityDamageByBlock(EntityDamageByBlockEvent e) {
-        if (!(e.getEntity() instanceof Player player))
+        var entity = e.getEntity();
+        if(entity.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
+        if (!(entity instanceof Player player))
             return;
         User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
+
         if (!user.isGodModeEnabled())
             return;
         e.setCancelled(true);
@@ -50,9 +76,17 @@ public class GodModeListener implements Listener {
 
     @EventHandler
     private void onEntityDamageItem(EntityDamageItemEvent e) {
-        if (!(e.getEntity() instanceof Player player))
+        var entity = e.getEntity();
+        if(entity.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
+        if (!(entity instanceof Player player))
             return;
         User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
+
         if (!user.isGodModeEnabled())
             return;
         e.setCancelled(true);

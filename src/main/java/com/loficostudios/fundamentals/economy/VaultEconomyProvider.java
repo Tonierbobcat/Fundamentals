@@ -146,7 +146,6 @@ public class VaultEconomyProvider implements net.milkbowl.vault.economy.Economy 
         return withdrawPlayer(Bukkit.getPlayer(playerName), amount);
     }
 
-    private static boolean overDrawls = false;
     @Override
     public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
         User user;

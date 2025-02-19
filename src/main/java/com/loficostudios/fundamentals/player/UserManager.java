@@ -98,6 +98,8 @@ public class UserManager {
     public void handleJoin(Player player) {
         UUID uuid = player.getUniqueId();
         Logger lgr = plugin.getLogger();
+        if (player.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
         User user = null;
         if (hasProfile(player)) {
             user = loadedUsers.get(uuid);
@@ -144,6 +146,8 @@ public class UserManager {
     }
 
     public void handleLeave(Player player) {
+        if (player.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
         User user = onlineUsers.get(player.getUniqueId());
         user.save();
         UUID uuid = player.getUniqueId();

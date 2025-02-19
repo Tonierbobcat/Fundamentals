@@ -34,12 +34,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.*;
 import java.util.logging.Level;
 
-public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
+public final class FundamentalsPlugin extends JavaPlugin {
 
     public static final String namespace = "lcs";
 
@@ -62,8 +63,9 @@ public final class FundamentalsPlugin extends MelodyPlugin<FundamentalsPlugin> {
 //        Instance = this;
 //    }
 
+
     @Override
-    protected void onStart() {
+    public void onEnable() {
         CommandAPI.onEnable();
         createConfigs();
 

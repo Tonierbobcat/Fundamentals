@@ -4,6 +4,7 @@ import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.fundamentals.experimental.IReloadable;
 import com.loficostudios.fundamentals.player.UserManager;
 import com.loficostudios.fundamentals.player.user.User;
+import com.loficostudios.fundamentals.utils.Debug;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -66,9 +67,17 @@ public class MagnetListener implements Listener, IReloadable {
             return;
         Player player = e.getPlayer();
         GameMode current = player.getGameMode();
+
+        if(player.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
         if (!current.equals(GameMode.SURVIVAL) && !current.equals(GameMode.ADVENTURE))
             return;
-        User user = userManager.getUser(player);
+        User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
+
         if (!magnetAlwaysEnabled) {
             if (!user.isMagnetEnabled())
                 return;
@@ -94,10 +103,16 @@ public class MagnetListener implements Listener, IReloadable {
             return;
         Player player = e.getPlayer();
         GameMode current = player.getGameMode();
+        if(player.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
         if (!current.equals(GameMode.SURVIVAL) && !current.equals(GameMode.ADVENTURE))
             return;
+        User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
 
-        User user = userManager.getUser(player);
         if (!magnetAlwaysEnabled) {
             if (!user.isMagnetEnabled())
                 return;
@@ -131,7 +146,15 @@ public class MagnetListener implements Listener, IReloadable {
         Player player = e.getEntity().getKiller();
         if (player == null)
             return;
-        User user = userManager.getUser(player);
+
+        if(player.hasMetadata("NPC")) //CITIZENS HOOK
+            return;
+        User user = plugin.getUserManager().getUser(player);
+        if (user == null) {
+            Debug.logError("User is null!");
+            return;
+        }
+
         if (!magnetAlwaysEnabled) {
             if (!user.isMagnetEnabled())
                 return;
