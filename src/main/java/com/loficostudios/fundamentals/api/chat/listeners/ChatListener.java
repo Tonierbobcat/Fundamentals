@@ -2,6 +2,7 @@ package com.loficostudios.fundamentals.api.chat.listeners;
 
 import com.loficostudios.fundamentals.api.chat.ChatProvider;
 import com.loficostudios.fundamentals.utils.ColorUtils;
+import com.loficostudios.fundamentals.utils.Debug;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.audience.Audience;
@@ -60,7 +61,11 @@ public class ChatListener implements Listener {
         try {
             e.joinMessage(mm.deserialize(raw
                     .replace("{player}", name)));
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Debug.logWarning("Could not send serialized join-message. " + ex.getMessage());
+            e.joinMessage(Component.text(raw
+                    .replace("{player}", name)
+            ));
         }
     }
 
@@ -84,7 +89,11 @@ public class ChatListener implements Listener {
         try {
             e.quitMessage(mm.deserialize(raw
                     .replace("{player}", name)));
-        } catch (Exception ignore) {
+        } catch (Exception ex) {
+            Debug.logWarning("Could not send serialized quit-message. " + ex.getMessage());
+            e.quitMessage(Component.text(raw
+                    .replace("{player}", name)
+            ));
         }
     }
 
