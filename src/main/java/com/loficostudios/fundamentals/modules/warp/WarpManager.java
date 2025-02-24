@@ -2,12 +2,16 @@ package com.loficostudios.fundamentals.modules.warp;
 
 import com.loficostudios.fundamentals.FundamentalsPlugin;
 import com.loficostudios.melodyapi.file.impl.YamlFile;
+import com.loficostudios.melodyapi.gui.events.GuiCloseEvent;
+import com.loficostudios.melodyapi.gui.events.GuiOpenEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -118,6 +122,22 @@ public class WarpManager {
 
         // Save the configuration to the file
         file.save();
+    }
+
+    @EventHandler
+    private void onClose(GuiCloseEvent e) {
+        if (!(e.getGui() instanceof WarpGUI))
+            return;
+        e.getPlayer().playSound(e.getPlayer().getLocation(),
+                Sound.ENTITY_EGG_THROW, 0.7f, 0.5f);
+    }
+
+    @EventHandler
+    private void onOpen(GuiOpenEvent e) {
+        if (!(e.getGui() instanceof WarpGUI))
+            return;
+        e.getPlayer().playSound(e.getPlayer().getLocation(),
+                Sound.ENTITY_EGG_THROW, 0.7f, 1.5f);
     }
 
     Map<String, Object> serializeLocation(Location location) {
